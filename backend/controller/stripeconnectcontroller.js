@@ -16,7 +16,7 @@ export const createuseraccount=catchasyncerror(async(req,res,next)=>{
 
 
     const account = await stripeClient.accounts.create({
-        country:"GB",
+        country:"FR",
         type: 'express',
         capabilities: {
             card_payments: {
@@ -26,7 +26,7 @@ export const createuseraccount=catchasyncerror(async(req,res,next)=>{
               requested: true,
             },
           },
-          business_type:"individual",
+        //   business_type:"individual",
           business_profile:{
             url:"https://www.trips.com",
           },
@@ -50,7 +50,7 @@ export const createuseraccount=catchasyncerror(async(req,res,next)=>{
         
         
             const accountlink = await stripeClient.accountLinks.create({
-                account: 'acct_1NeikQQSmFQD5Tbs',
+                account: 'acct_1NfbyY4IVBdJL5It',
                 type:"account_onboarding",
                 return_url:"http://localhost:5000/success/account",
                 refresh_url:"http://localhost:5000/error",
@@ -65,6 +65,25 @@ export const createuseraccount=catchasyncerror(async(req,res,next)=>{
         
         
                 });
+
+
+                // check create account status 
+                export const checkaccountstatus=catchasyncerror(async(req,res,next)=>{
+    
+                    const stripeClient = new stripe(secretKey,{
+                        apiVersion:"2022-11-15"
+                    });
+                
+                
+                    const account = await stripeClient.accounts.retrieve("acct_1NfbyY4IVBdJL5It");
+        
+                        res.status(200).json({
+                            success:true,
+                            account,
+                        })
+                
+                
+                        });
 
 
                 // create a payment intent
